@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
   public static int location;
   public static DriveMode driveMode = DriveMode.OPERATOR_MILD;
   public static boolean driveJoy = false;
-  public static boolean driveArcade = true;
+  public static boolean driveArcade = false;
   PowerDistribution PDH = new PowerDistribution();
 
   public enum DriveMode {

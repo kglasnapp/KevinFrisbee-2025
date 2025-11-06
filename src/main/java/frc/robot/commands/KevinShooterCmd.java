@@ -18,7 +18,7 @@ public class KevinShooterCmd extends Command {
 
     enum State {
         IDLE, START_SHOOT, DROP_FRISBEE, PUSH_FRISBEE, WAIT_FOR_SPEED, SHOOTER_REVERSE, RUMBLE, LIFTING_TOP,
-        DROPING_TOP
+        DROPING_TOP, SHOOTER_STOP
     };
 
     private State state = State.IDLE;
@@ -62,6 +62,8 @@ public class KevinShooterCmd extends Command {
                 if (Robot.config.enableCompressor) {
                     Robot.compressor.stop();
                 }
+                logf("Start Motor\n");
+                Robot.shooter.setShooterSpeed(.2);
                 break;
             case SET_SHOOTER_SPEED_SLOW:
                 Robot.shooter.setShooterSpeed(Robot.config.ShooterSpeedLow); // change to .33 only after a test shot
@@ -110,6 +112,7 @@ public class KevinShooterCmd extends Command {
     @Override
     public void end(boolean interrupted) {
         logf("Shoot sequence ended state:%s overAllDelay:%d\n", state, overallDelay);
+        Robot.shooter.stopShooter();
         state = State.IDLE;
         if (Robot.compressor != null)
             Robot.compressor.restart();
@@ -171,11 +174,14 @@ public class KevinShooterCmd extends Command {
 
             case WAIT_FOR_SPEED:
                 delay--;
+                if(delay < 10) {
+                    return false;
+                }
                 if (isShootSpeedValid()) {
                     Robot.shooter.activatePusher();
                     state = State.PUSH_FRISBEE;
                     logf("Push Frisbee into shooter\n");
-                    delay = 10;
+                    delay = 20;
                 }
                 if (delay < 0) {
                     logf("!!!!! Shooter not up to speed in allocated time\n");
@@ -192,6 +198,17 @@ public class KevinShooterCmd extends Command {
                 if (delay < 0) {
                     // Frisbee should have been launched
                     Robot.shooter.releasePusher();
+                    delay = 15;
+                    state = State.SHOOTER_STOP;
+                    return false;
+                }
+                return false;
+
+            case SHOOTER_STOP:
+                delay--;
+                if (delay < 0) {
+                    Robot.shooter.stopShooter();
+                    logf("SHOOTER STOPPED!!!!!!!!!!!!!!!!\n");
                     state = State.IDLE;
                     return true;
                 }

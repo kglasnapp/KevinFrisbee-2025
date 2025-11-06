@@ -41,7 +41,7 @@ public class Config {
     public boolean invertDrivetrain = false;
     public double driveTicksPerInch = 987;
     public boolean defaultBrakeMode = true;
-    public double wheelBase = 15.5; // Wheel base for mini
+    public double wheelBase = 15.5; // Wheel getbase for mini
     public double wheelDiameter = 6.0; // Wheel diameter for MINI
     public double driveTicksPerRevolution = 2000; // Value for mini
     public double throttleRate = 1.5; // for the throttle power curve
@@ -85,7 +85,7 @@ public class Config {
     public boolean shooterVelocityPID = true;
     public int shooterID = 12;
     public double ShooterSpeedLow = .5;
-    public double ShooterSpeedMedium = .7;
+    public double ShooterSpeedMedium = .85;
     public double ShooterSpeedHigh = 1;
 
     public int ballLiftDelay = 20;
@@ -122,10 +122,11 @@ public class Config {
         if (isMini()) {
             robotType = RobotType.MiniFast;
             robotType = RobotType.Kevin;
+
         }
-        logf("Start of Robot Config for %s\n", robotType);
         switch (robotType) {
             case Kevin:
+                logf("Start of Robot Config for %s\n", robotType);
                 pneumaticType = PneumaticsModuleType.CTREPCM;
                 invertDrivetrain = true;
                 

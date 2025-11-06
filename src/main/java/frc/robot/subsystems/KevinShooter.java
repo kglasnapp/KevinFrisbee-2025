@@ -63,9 +63,9 @@ public class KevinShooter extends SubsystemBase {
   }
 
   public void setShooterSpeed(double speed) {
-    if (lastSpeed == speed) {
-      return;
-    }
+    // if (lastSpeed == speed) {
+    //   return;
+    // }
     logf("New Shooter speed:%.2f last:%.2f\n", speed, lastSpeed);
     shooterMotor.setSpeed(speed);
     lastSpeed = speed;
