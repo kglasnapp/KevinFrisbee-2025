@@ -25,7 +25,7 @@ public class KevinShooter extends SubsystemBase {
 
   public KevinShooter() {
     shooterMotor = new MotorSRX("Shooter", Robot.config.shooterID, -1, true);
-    shooterMotor.setBrakeMode(false);
+    shooterMotor.setBrakeMode(true);
     shooterMotor.setCurrentLimit(kPeakCurrentAmps, kContinCurrentAmps, kPeakTimeMs);
 
     
