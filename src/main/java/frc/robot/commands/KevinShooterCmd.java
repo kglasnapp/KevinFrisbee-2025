@@ -63,7 +63,7 @@ public class KevinShooterCmd extends Command {
                     Robot.compressor.stop();
                 }
                 logf("Start Motor\n");
-                Robot.shooter.setShooterSpeed(.2);
+                Robot.shooter.setShooterSpeed(1);
                 break;
             case SET_SHOOTER_SPEED_SLOW:
                 Robot.shooter.setShooterSpeed(Robot.config.ShooterSpeedLow); // change to .33 only after a test shot
@@ -167,16 +167,17 @@ public class KevinShooterCmd extends Command {
                 if (delay < 0) {
                     Robot.shooter.activateDroper();
                     logf("Frisbee dropped\n");
-                    delay = 5;
+                    delay = 20;
                     state = State.WAIT_FOR_SPEED;
                 }
                 return false;
 
             case WAIT_FOR_SPEED:
                 delay--;
-                if(delay < 10) {
+                if(delay < 5) {
                     return false;
                 }
+                logf("Shooter Current:%.2f", Robot.shooter.getMotorCurrent());
                 if (isShootSpeedValid()) {
                     Robot.shooter.activatePusher();
                     state = State.PUSH_FRISBEE;
@@ -198,7 +199,7 @@ public class KevinShooterCmd extends Command {
                 if (delay < 0) {
                     // Frisbee should have been launched
                     Robot.shooter.releasePusher();
-                    delay = 15;
+                    delay = 40;
                     state = State.SHOOTER_STOP;
                     return false;
                 }
